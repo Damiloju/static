@@ -1,13 +1,9 @@
 pipeline{
     agent any
     stages{
-        stage("Build"){
-            steps{
-                sh 'echo "Hello World"'
-                sh '''
-                    echo "Multiline shell steps works too"
-                    ls -lah
-                '''
+        stage("Upload To AWS"){
+            withAWS(credentials:'aws-statci',region:'eu-west-1') {
+                s3Upload(file:'index.html', bucket:'static-udacity-dam', path:'index.html')
             }
         }
     }
